@@ -14,17 +14,6 @@
  * @property {Song[]} songs - The list of songs in the playlist.
  */
 // Example: { name: 'Playlist Name', songs: [{ title: 'Song Title', artist: 'Song Artist', genre: 'Song Genre', duration: 180, favorite: false }] }
-const playlist = {
-  name: '', 
-  songs: [
-    { title: '', 
-      artist: '', 
-      genre: '', 
-      duration: 0, 
-      favorite: false 
-    }
-  ]
-}
 
 const musicCatalog = () => {
   /**
@@ -32,7 +21,6 @@ const musicCatalog = () => {
    * @type {Playlist[]}
    */
   let playlists = [];
-  let songs = [];
 
   /**
    * Find a playlist by its name in playlists list
