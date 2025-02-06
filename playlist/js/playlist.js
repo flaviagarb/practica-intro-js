@@ -35,6 +35,37 @@ const musicCatalog = () => {
   let songs = [];
 
   /**
+   * Find a playlist by its name in playlists list
+   * @param {string} playlistName - The name of the playlist 
+   * @throws {Error} If the playlist is not found
+   * @returns {Playlist} The finded playlist
+   */
+  const findPlaylist = (playlistName) => {
+    // 1) buscar nombre de playlist en lista playlists
+    const findedPlaylist = playlists.find(({ name }) => name === playlistName);
+    // 2) si no encuentra playlist lanza error
+    if (!findedPlaylist) {
+      throw new Error ('Playlist not found');
+    }
+    return findedPlaylist
+  };
+
+  /**
+   * Find a song in a playlist
+   * @param {string} playlist - The playlist
+   * @param {string} songTitle - The name of the song
+   * @throws {Error} If the song  is not found
+   * @returns {Song} The finded song
+   */
+  const findSong = (playlist, songTitle) => {
+    const findedSong = (playlist.songs.find(({ title }) => title === songTitle))
+  if (!findedSong) {
+    throw new Error ('Song not found');
+  }
+  return findedSong
+};
+
+  /**
    * Adds a new playlist to the catalog.
    * @param {string} playlistName - The name of the new playlist.
    */ 
@@ -43,7 +74,6 @@ const musicCatalog = () => {
     let nuevaPlaylist = { name: playlistName, songs: [] };
     //añade ese objeto a la lista de playlist
     playlists = [ ...playlists, nuevaPlaylist ]
-    
   };
 
   /**
@@ -69,18 +99,11 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found.
    */
   const addSongToPlaylist = (playlistName, song) => {
-    // 1) buscar nombre de playlist en lista playlists
-    const findedPlaylist = playlists.find(({ name }) => name === playlistName);
-    // 2) si no encuentra playlist lanza error
-    if (!findedPlaylist) {
-      throw new Error ('Playlist not found');
-    }
-    // 3) añadir campo favorite
+    const findedPlaylist = findPlaylist(playlistName)
+
     song.favorite = false
     
-    // 4) añadir song a songs: song es una lista con dentro diccionarios, dentro del diccionario Playlist
     findedPlaylist.songs = [...findedPlaylist.songs, song]
-    
   };
 
   /**
@@ -90,18 +113,11 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist or song is not found.
    */
   const removeSongFromPlaylist = (playlistName, songTitle) => {
-    // 1) buscar nombre de playlist en lista playlists
-    const findedPlaylistV2 = playlists.find(({ name }) => name === playlistName);
-    // 2) si no encuentra playlist lanza error
-    if (!findedPlaylistV2) {
-      throw new Error ('Playlist not found');
-    }
-    // 3) primero buscamos el título en nuevaplaylist.songs y si no encuentro lanzo error
-    const findedSong = (findedPlaylistV2.songs.find(({ title }) => title === songTitle))
-    if (!findedSong)
-      throw new Error ('Song not found');
-    // 4) si la encuentro la elimino y actualizo playlist
-    findedPlaylistV2.songs = findedPlaylistV2.songs.filter(({ title }) => title !== songTitle)
+    const findedPlaylist = findPlaylist(playlistName)
+
+    const findedSong = findSong(findedPlaylist, songTitle);
+
+    findedPlaylist.songs = findedPlaylist.songs.filter(({ title }) => title !== songTitle)
   };
 
   /**
@@ -110,23 +126,18 @@ const musicCatalog = () => {
    * @param {string} title - The title of the song to mark as a favorite.
    */
   const favoriteSong = (playlistName, songTitle) => {
-    const findedPlaylistV3 = playlists.find(({ name }) => name === playlistName);
-    if (!findedPlaylistV3) {
-      throw new Error ('Playlist not found');
-    }
-    const findedSong2 = (findedPlaylistV3.songs.find(({ title }) => title === songTitle))
-    if (!findedSong2) {
-      throw new Error ('Song not found');
-    }
-    if  (findedSong2.favorite === false) {
-      findedSong2.favorite = true
+    const findedPlaylist = findPlaylist(playlistName);
+
+    const findedSong = findSong(findedPlaylist, songTitle);
+
+    if  (findedSong.favorite === false) {
+      findedSong.favorite = true
     }
     else {
-      findedSong2.favorite = false
+      findedSong.favorite = false
     }
   };
   
-
   /**
    * Sorts songs in a specific playlist by a given criterion (title, artist, or duration).
    * @param {string} playlistName - The name of the playlist to sort songs in.
