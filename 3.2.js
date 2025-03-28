@@ -4,12 +4,7 @@ const secondInput = 1;
 const thirdInput = 11234;
 
 const transform = (value) => {
-    const transformStr = value.toString();
-
-    let listStr = transformStr.split('');
-
-    return listStr.join("-");
-
+    return value.toString().split('').join("-");
 };
 
 console.log(transform(input))

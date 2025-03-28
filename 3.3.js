@@ -1,14 +1,9 @@
 // 3.3 
 
 const reverseWord = (word) => {
-    let wordLen = word.length;
-    let wordLenStr = wordLen.toString();
-    
-    const wordList = word.split("");
-    const reversedWordList = wordList.reverse();
-    const reversedWord = reversedWordList.join("");
-    
-    return wordLenStr + " " + reversedWord;
+    const wordLen = word.length;
+    const reversedWord = word.split("").reverse().join("");
+    return `${wordLen} ${reversedWord}`;
 };
 
 const input1 = 'string'
